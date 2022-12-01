@@ -6,10 +6,10 @@ export function clamp(number, lowerBound, upperBound) {
 
 export const safePreventDefault = event => {
   const passiveEvents = ["onTouchStart", "onTouchMove", "onWheel"];
-  if(!passiveEvents.includes(event._reactName)) {
+  if (!passiveEvents.includes(event._reactName)) {
     event.preventDefault();
   }
-}
+};
 
 export const getOnDemandLazySlides = spec => {
   let onDemandSlides = [];
@@ -206,17 +206,23 @@ export const slideHandler = spec => {
     if (animationSlide < 0) {
       finalSlide = animationSlide + slideCount;
       if (!infinite) finalSlide = 0;
-      else if (slideCount % slidesToScroll !== 0)
+      else if (slideCount % slidesToScroll !== 0) {
         finalSlide = slideCount - (slideCount % slidesToScroll);
+      }
     } else if (!canGoNext(spec) && animationSlide > currentSlide) {
       animationSlide = finalSlide = currentSlide;
     } else if (centerMode && animationSlide >= slideCount) {
       animationSlide = infinite ? slideCount : slideCount - 1;
-      finalSlide = infinite ? 0 : slideCount - 1;
+      finalSlide = infinite ? index - slideCount : slideCount - 1;
     } else if (animationSlide >= slideCount) {
-      finalSlide = animationSlide - slideCount;
-      if (!infinite) finalSlide = slideCount - slidesToShow;
-      else if (slideCount % slidesToScroll !== 0) finalSlide = 0;
+      {
+        finalSlide = animationSlide - slideCount;
+      }
+      if (!infinite) {
+        finalSlide = slideCount - slidesToShow;
+      } else if (slideCount % slidesToScroll !== 0) {
+        finalSlide = 0;
+      }
     }
 
     if (!infinite && animationSlide + slidesToShow >= slideCount) {
@@ -386,9 +392,12 @@ export const swipeMove = (e, spec) => {
   let touchSwipeLength = touchObject.swipeLength;
   if (!infinite) {
     if (
-      (currentSlide === 0 && (swipeDirection === "right" || swipeDirection === "down")) ||
-      (currentSlide + 1 >= dotCount && (swipeDirection === "left" || swipeDirection === "up")) ||
-      (!canGoNext(spec) && (swipeDirection === "left" || swipeDirection === "up"))
+      (currentSlide === 0 &&
+        (swipeDirection === "right" || swipeDirection === "down")) ||
+      (currentSlide + 1 >= dotCount &&
+        (swipeDirection === "left" || swipeDirection === "up")) ||
+      (!canGoNext(spec) &&
+        (swipeDirection === "left" || swipeDirection === "up"))
     ) {
       touchSwipeLength = touchObject.swipeLength * edgeFriction;
       if (edgeDragged === false && onEdge) {
